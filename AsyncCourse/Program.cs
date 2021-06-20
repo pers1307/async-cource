@@ -6,33 +6,28 @@ namespace AsyncCourse
 {
     internal class Program
     {
-        public static void Main(string[] args)
+//        public static void Main(string[] args)
+//        {
+//            
+//        }
+        
+        private static async Task Main()
         {
             Console.WriteLine($"Метод Main начал свою работу в потоке {Thread.CurrentThread.ManagedThreadId}.");
 
-            // Запускается асинхронно 
-            var task = WriteCharAsync('#').DisableAsyncWarning(); // Запуск метода асинхронно
-
-            // Будет выполняться все синхронно, так как ожидает выполнения
-            // t.GetAwaiter().GetResult();
+            await WriteCharAsync('#'); // Запуск метода асинхронно
             WriteChar('*'); // Запуск метода синхронно
 
             Console.WriteLine($"Метод Main закончил свою работу в потоке {Thread.CurrentThread.ManagedThreadId}.");
             Console.ReadKey();
         }
-        
+
         private static async Task WriteCharAsync(char symbol)
         {
             Console.WriteLine($"Метод WriteCharAsync начал свою работу в потоке {Thread.CurrentThread.ManagedThreadId}.");
 
-            // Начинает выполняться в исходном потоке
-            // Сразу не выполниться, значит вернем управление главному потоку
-            // Долго выполнялся и передался в другой поток
-            // Все остальное уйдет в продолжение
-            // await Task.Run(() => WriteChar(symbol));
             await Task.Run(() => WriteChar(symbol));
 
-            // Будет закончивать выполнение уже в другом потоке
             Console.WriteLine($"Метод WriteCharAsync закончил свою работу в потоке {Thread.CurrentThread.ManagedThreadId}.");
         }
 
@@ -47,14 +42,58 @@ namespace AsyncCourse
                 Thread.Sleep(100);
             }
         }
-    }
-    
-    // Это расширение позволяет убрать подчеркивание 
-    internal static class MyAsyncExtensions
-    {
-        public static Task DisableAsyncWarning(this Task t)
+        
+        
+        //************************************
+        
+        //private static async Task Main()
+        private static void Main()
         {
-            return t;
+            int x = 3, y = 5;
+
+            Task<int> additionTask = AdditionAsync("[асинхронно]", x, y);
+
+            int syncSum = Addition("[синхронно]", x, y);
+
+            int asyncSum = 0;
+
+            // Разные способы получения результата из асинхронной задачи:
+            asyncSum = additionTask.Result;
+            //asyncSum = additionTask.GetAwaiter().GetResult();
+            //asyncSum = await additionTask;
+            Console.WriteLine($"\nРезультат асинхронного выполнения: {asyncSum}.");
+            Console.WriteLine($"Результат синхронного выполнения: {syncSum}.");
+
+            Console.WriteLine($"Метод Main завершил свою работу");
+            Console.ReadKey();
         }
+
+        private static int Addition(string operationName, int x, int y)
+        {
+            Console.WriteLine($"Метод Addition вызван {operationName} в потоке: {Thread.CurrentThread.ManagedThreadId}");
+            // Thread.Sleep - имитация нагруженной и тяжелой работы.
+            Thread.Sleep(3000);
+            return x + y;
+        }
+
+        private static async Task<int> AdditionAsync(string operationName, int x, int y)
+        {
+            // Первый способ
+
+            int result = await Task.Run<int>(() => Addition(operationName, x, y));
+            return result;
+
+            // ---------------------------------------------- //
+
+            // Второй способ
+
+            //return await Task.Run<int>(() => Addition(operationName, x, y));
+
+            // ---------------------------------------------- //
+
+            // Ошибочный способ
+            //return Task.Run<int>(() => Addition(operationName, x, y));
+        }
+
     }
 }
