@@ -74,6 +74,7 @@
     <Compile Include="Lesson3\TaskAttachToParentWithContinue.cs" />
     <Compile Include="Lesson3\ThreadTaskScheduler.cs" />
     <Compile Include="Lesson3\TreadTaskScedulerAndDefaultExample.cs" />
+    <Compile Include="Lesson4\AcyncMainExample.cs" />
     <Compile Include="Lesson4\AsyncAwaitExample.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
