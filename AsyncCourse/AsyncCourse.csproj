@@ -76,9 +76,11 @@
     <Compile Include="Lesson3\TreadTaskScedulerAndDefaultExample.cs" />
     <Compile Include="Lesson4\AcyncMainExample.cs" />
     <Compile Include="Lesson4\AsyncAwaitExample.cs" />
-    <Compile Include="Lesson5\ConsoleSynchronizationContext.cs" />
-    <Compile Include="Lesson5\Message.cs" />
-    <Compile Include="Lesson5\MessageListenter.cs" />
+    <Compile Include="Lesson5\AwaitableTestTaskScheduler\AwaitableTestTaskScheduler.cs" />
+    <Compile Include="Lesson5\ConsoleSynchronizationContext\ConsoleSynchronizationContext.cs" />
+    <Compile Include="Lesson5\ConsoleSynchronizationContext\ConsoleSynchronizationContextExample.cs" />
+    <Compile Include="Lesson5\ConsoleSynchronizationContext\Message.cs" />
+    <Compile Include="Lesson5\ConsoleSynchronizationContext\MessageListenter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

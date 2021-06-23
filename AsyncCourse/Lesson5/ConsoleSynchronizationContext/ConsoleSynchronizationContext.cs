@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace AsyncCourse.Lesson5
+namespace AsyncCourse.Lesson5.ConsoleSynchronizationContext
 {
     internal class ConsoleSynchronizationContext : SynchronizationContext
     {

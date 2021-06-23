@@ -1,71 +1,65 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using AsyncCourse.Lesson5;
+using AsyncCourse.Lesson5.ConsoleSynchronizationContext;
+using TaskSchedulerAwait;
 
 namespace AsyncCourse
 {
     internal class Program
     {
-//        public static void Main(string[] args)
-//        {
-//            
-//        }
-
-        static Program()
+        private static async Task Main()
         {
-            SynchronizationContext.SetSynchronizationContext(new ConsoleSynchronizationContext());
-        }
+            Console.SetWindowSize(90, 40);
 
-        private static void Main()
-        {
-            Message message = new Message(ApplicationMain, null);
-            MessageListenter.AddMessage(message);
 
-            new MessageListenter().Listen();
+            ShowData("Main выполнился до await");
 
+            var mainTask = new Task<Task>(MethodAsync);
+            mainTask.Start(new AwaitableTestTaskScheduler());
+            
+            // Код после await будет помещен в задачу, так как наш планировщик умеет работать только с задачами
+            var result = await mainTask;                    
+            await result;
+
+            ShowData("Main выполнился после await");
+            
             Console.ReadKey();
-        }
-
-        private static  void ApplicationMain(object _)
-        {
-            Console.WriteLine($"Наш метод Main начал свою работу в потоке {Thread.CurrentThread.ManagedThreadId}");
-
-            StubMethod1();
-
-            MethodAsync();
-
-            StubMethod2();
-
-            Console.WriteLine($"Наш метод Main закончил свою работу в потоке {Thread.CurrentThread.ManagedThreadId}");
         }
 
         private static async Task MethodAsync()
         {
-            Console.Write(new string('-', 80));
+            ShowData("MethodAsync выполнился до await");
 
-            Console.WriteLine($"Код до оператора await выполнен в потоке {Thread.CurrentThread.ManagedThreadId}");
-            await Task.Run(Method);
-            Console.WriteLine($"Код после оператора await выполнен в потоке {Thread.CurrentThread.ManagedThreadId}");
+            var task = new Task(TestMethod);
+            task.Start();
+
+            await task;
+            // await task.ConfigureAwait(false); 
+
+            ShowData("MethodAsync выполнился после await");
+        }
+
+        private static void TestMethod()
+        {
+            ShowData("TestMethod выполнился");
+        }
+
+        private static void ShowData(string description)
+        {
+            Console.WriteLine($"{description}");
+
+            Console.WriteLine($"Имя потока: {Thread.CurrentThread.Name} ");
+            Console.WriteLine($"Id потока: {Thread.CurrentThread.ManagedThreadId}. Поток из пула потоков: {Thread.CurrentThread.IsThreadPoolThread}");
+            Console.WriteLine($"Id задачи: {Task.CurrentId}");
+            Console.WriteLine($"Текущий планировщик задач: {typeof(TaskScheduler).GetProperty("InternalCurrent", BindingFlags.Static | BindingFlags.NonPublic).GetValue(typeof(TaskScheduler))}");
 
             Console.WriteLine(new string('-', 80));
-        }
-        private static void StubMethod1()
-        {
-            Console.WriteLine($"Пример метода1!!! Id потока: {Thread.CurrentThread.ManagedThreadId}");
-        }
-
-        private static void StubMethod2()
-        {
-            Console.WriteLine($"Пример метода2!!! Id потока: {Thread.CurrentThread.ManagedThreadId}");
-        }
-
-
-        private static void Method()
-        {
-            Console.WriteLine($"Метод {nameof(Method)} был выполнен в потоке {Thread.CurrentThread.ManagedThreadId}");
+            Console.WriteLine();
         }
         
-        // 30
+        // 1:33
     }
 }
