@@ -16,7 +16,7 @@ namespace AsyncCourse.Lesson5.ConsoleSynchronizationContext
             SynchronizationContext.SetSynchronizationContext(new ConsoleSynchronizationContext());
         }
 
-        private static void Main()
+        public void Main()
         {
             Message message = new Message(ApplicationMain, null);
             MessageListenter.AddMessage(message);
@@ -26,7 +26,7 @@ namespace AsyncCourse.Lesson5.ConsoleSynchronizationContext
             Console.ReadKey();
         }
 
-        private static async void ApplicationMain(object _)
+        private async void ApplicationMain(object _)
         {
             Console.WriteLine($"Наш метод Main начал свою работу в потоке {Thread.CurrentThread.ManagedThreadId}");
 
@@ -41,7 +41,7 @@ namespace AsyncCourse.Lesson5.ConsoleSynchronizationContext
             Console.WriteLine($"Наш метод Main закончил свою работу в потоке {Thread.CurrentThread.ManagedThreadId}");
         }
 
-        private static async Task MethodAsync()
+        private async Task MethodAsync()
         {
             Console.Write(new string('-', 80));
 
@@ -58,12 +58,12 @@ namespace AsyncCourse.Lesson5.ConsoleSynchronizationContext
             Console.WriteLine($"Пример метода1!!! Id потока: {Thread.CurrentThread.ManagedThreadId}");
         }
 
-        private static void StubMethod2()
+        private void StubMethod2()
         {
             Console.WriteLine($"Пример метода2!!! Id потока: {Thread.CurrentThread.ManagedThreadId}");
         }
         
-        private static void Method()
+        private void Method()
         {
             Console.WriteLine($"Метод {nameof(Method)} был выполнен в потоке {Thread.CurrentThread.ManagedThreadId}");
         }

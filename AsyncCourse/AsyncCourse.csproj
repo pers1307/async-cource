@@ -76,7 +76,11 @@
     <Compile Include="Lesson3\TreadTaskScedulerAndDefaultExample.cs" />
     <Compile Include="Lesson4\AcyncMainExample.cs" />
     <Compile Include="Lesson4\AsyncAwaitExample.cs" />
+    <Compile Include="Lesson5\AsyncVoidLambda.cs" />
+    <Compile Include="Lesson5\AsyncVoid\AsyncVoidExample.cs" />
+    <Compile Include="Lesson5\AsyncVoid\TestSyncContext.cs" />
     <Compile Include="Lesson5\AwaitableTestTaskScheduler\AwaitableTestTaskScheduler.cs" />
+    <Compile Include="Lesson5\AsyncAsyncTaskExample.cs" />
     <Compile Include="Lesson5\ConsoleSynchronizationContext\ConsoleSynchronizationContext.cs" />
     <Compile Include="Lesson5\ConsoleSynchronizationContext\ConsoleSynchronizationContextExample.cs" />
     <Compile Include="Lesson5\ConsoleSynchronizationContext\Message.cs" />
